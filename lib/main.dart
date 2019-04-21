@@ -14,22 +14,23 @@ class SIForm extends StatefulWidget {
 
 class _SIFormState extends State<SIForm> {
   var _currency = ['DKK', 'USD', 'EURO'];
-  final _minumumPadding = 5.0;
+  final _minimumPadding = 5.0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+//      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text("Simple Currency Converter"),
       ),
       body: Container(
-        margin: EdgeInsets.all(_minumumPadding * 2),
-        child: Column(
+        margin: EdgeInsets.all(_minimumPadding * 2),
+        child: ListView(
           children: <Widget>[
             getImageAsset(),
             Padding(
               padding: EdgeInsets.only(
-                  top: _minumumPadding, bottom: _minumumPadding),
+                  top: _minimumPadding, bottom: _minimumPadding),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -42,7 +43,7 @@ class _SIFormState extends State<SIForm> {
                             borderRadius: BorderRadius.circular(5.0))),
                   )),
                   Container(
-                    width: _minumumPadding * 5,
+                    width: _minimumPadding * 5,
                   ),
                   Expanded(
                       child: DropdownButton<String>(
@@ -60,7 +61,7 @@ class _SIFormState extends State<SIForm> {
             ),
             Padding(
               padding: EdgeInsets.only(
-                  top: _minumumPadding, bottom: _minumumPadding),
+                  top: _minimumPadding, bottom: _minimumPadding),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -73,8 +74,8 @@ class _SIFormState extends State<SIForm> {
                             borderRadius: BorderRadius.circular(5.0))),
                   )),
                   Container(
-                    width: _minumumPadding * 5,
-                    height: _minumumPadding * 20,
+                    width: _minimumPadding * 5,
+                    height: _minimumPadding * 20,
                   ),
                   Expanded(
                       child: DropdownButton<String>(
@@ -92,7 +93,7 @@ class _SIFormState extends State<SIForm> {
             ),
             Padding(
               padding: EdgeInsets.only(
-                  bottom: _minumumPadding, top: _minumumPadding),
+                  bottom: _minimumPadding, top: _minimumPadding),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -111,8 +112,8 @@ class _SIFormState extends State<SIForm> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(_minumumPadding * 2),
-              child: Text('Todo'),
+              padding: EdgeInsets.all(_minimumPadding * 2),
+              child: Text('TODO'),
             )
           ],
         ),
@@ -130,7 +131,7 @@ class _SIFormState extends State<SIForm> {
 
     return Container(
       child: image,
-      margin: EdgeInsets.all(_minumumPadding * 10),
+      margin: EdgeInsets.all(_minimumPadding * 10),
     );
   }
 }
