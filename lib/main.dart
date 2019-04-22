@@ -18,14 +18,25 @@ class SIForm extends StatefulWidget {
 class _SIFormState extends State<SIForm> {
   var _currency = ['DKK', 'USD', 'EURO'];
   final _minimumPadding = 5.0;
-  var _currentItemSelected = "DKK";
-  var _currentConvertValueSelected = "USD";
+  var _currentItemSelected = "";
+  var _currentConvertValueSelected = "";
+
+  @override
+  void initState(){
+    super.initState();
+    _currentItemSelected = _currency[0];
+    _currentConvertValueSelected = _currency[1];
+  }
+
   TextEditingController currencyController = TextEditingController();
   var displayText = "";
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme.of(context).textTheme.title;
+    TextStyle textStyle = Theme
+        .of(context)
+        .textTheme
+        .title;
     return Scaffold(
 //      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
@@ -43,32 +54,32 @@ class _SIFormState extends State<SIForm> {
                 children: <Widget>[
                   Expanded(
                       child: TextField(
-                    keyboardType: TextInputType.number,
-                    style: textStyle,
-                    controller: currencyController,
-                    decoration: InputDecoration(
-                        labelText: "Your currency",
-                        hintText: "Insert Number",
-                        labelStyle: textStyle,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0))),
-                  )),
+                        keyboardType: TextInputType.number,
+                        style: textStyle,
+                        controller: currencyController,
+                        decoration: InputDecoration(
+                            labelText: "Your currency",
+                            hintText: "Insert Number",
+                            labelStyle: textStyle,
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      )),
                   Container(
                     width: _minimumPadding * 5,
                   ),
                   Expanded(
                       child: DropdownButton<String>(
-                    items: _currency.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    value: _currentItemSelected,
-                    onChanged: (String newValueSelected) {
-                      _onDropDownItemSelected(newValueSelected);
-                    },
-                  ))
+                        items: _currency.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        value: _currentItemSelected,
+                        onChanged: (String newValueSelected) {
+                          _onDropDownItemSelected(newValueSelected);
+                        },
+                      ))
                 ],
               ),
             ),
@@ -79,32 +90,32 @@ class _SIFormState extends State<SIForm> {
                 children: <Widget>[
                   Expanded(
                       child: Center(
-                    child: Text(
-                      "In To: ",
-                      style: TextStyle(
-                        inherit: true,
-                        fontSize: 30.0,
-                        shadows: [
-                          Shadow(
-                              // bottomLeft
-                              offset: Offset(-1.5, -1.5),
-                              color: Colors.white),
-                          Shadow(
-                              // bottomRight
-                              offset: Offset(1.5, -1.5),
-                              color: Colors.white),
-                          Shadow(
-                              // topRight
-                              offset: Offset(1.5, 1.5),
-                              color: Colors.white),
-                          Shadow(
-                              // topLeft
-                              offset: Offset(-1.5, 1.5),
-                              color: Colors.white),
-                        ],
-                      ),
-                    ),
-                  )),
+                        child: Text(
+                          "In To: ",
+                          style: TextStyle(
+                            inherit: true,
+                            fontSize: 30.0,
+                            shadows: [
+                              Shadow(
+                                // bottomLeft
+                                  offset: Offset(-1.5, -1.5),
+                                  color: Colors.white),
+                              Shadow(
+                                // bottomRight
+                                  offset: Offset(1.5, -1.5),
+                                  color: Colors.white),
+                              Shadow(
+                                // topRight
+                                  offset: Offset(1.5, 1.5),
+                                  color: Colors.white),
+                              Shadow(
+                                // topLeft
+                                  offset: Offset(-1.5, 1.5),
+                                  color: Colors.white),
+                            ],
+                          ),
+                        ),
+                      )),
 //                  Expanded(
 //                      child: TextField(
 //                    keyboardType: TextInputType.number,
@@ -161,7 +172,11 @@ class _SIFormState extends State<SIForm> {
                         "Reset",
                         textScaleFactor: 1.5,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          _reset();
+                        });
+                      },
                     ),
                   ),
                 ],
@@ -246,5 +261,13 @@ class _SIFormState extends State<SIForm> {
     }
 
     return result;
+  }
+
+
+  void _reset() {
+    currencyController.text = "";
+    displayText = "";
+    _currentItemSelected = _currency[0];
+    _currentConvertValueSelected = _currency[1];
   }
 }
