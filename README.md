@@ -1,4 +1,6 @@
 # currency_converter_app
+[Download Currency Converter for Android here](https://play.google.com/store/apps/details?id=com.first.app.ahmad.wajid.currency_converter_app)
+
 
 This is  an currency converter app
 
@@ -16,4 +18,3 @@ For help getting started with Flutter, view our
 samples, guidance on mobile development, and a full API reference.
 
 
-[Sites Using React](https://github.com/facebook/react/wiki/Sites-Using-React)
