@@ -16,13 +16,14 @@ class SIForm extends StatefulWidget {
 }
 
 class _SIFormState extends State<SIForm> {
+  var _formKey = GlobalKey<FormState>();
   var _currency = ['DKK', 'USD', 'EURO'];
   final _minimumPadding = 5.0;
   var _currentItemSelected = "";
   var _currentConvertValueSelected = "";
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _currentItemSelected = _currency[0];
     _currentConvertValueSelected = _currency[1];
@@ -33,89 +34,96 @@ class _SIFormState extends State<SIForm> {
 
   @override
   Widget build(BuildContext context) {
-    TextStyle textStyle = Theme
-        .of(context)
-        .textTheme
-        .title;
+    TextStyle textStyle = Theme.of(context).textTheme.title;
     return Scaffold(
 //      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text("Simple Currency Converter"),
       ),
-      body: Container(
-        margin: EdgeInsets.all(_minimumPadding * 2),
-        child: ListView(
-          children: <Widget>[
-            getImageAsset(),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: _minimumPadding, bottom: _minimumPadding),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                      child: TextField(
-                        keyboardType: TextInputType.number,
-                        style: textStyle,
-                        controller: currencyController,
-                        decoration: InputDecoration(
-                            labelText: "Your currency",
-                            hintText: "Insert Number",
-                            labelStyle: textStyle,
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      )),
-                  Container(
-                    width: _minimumPadding * 5,
-                  ),
-                  Expanded(
-                      child: DropdownButton<String>(
-                        items: _currency.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        value: _currentItemSelected,
-                        onChanged: (String newValueSelected) {
-                          _onDropDownItemSelected(newValueSelected);
-                        },
-                      ))
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  top: _minimumPadding, bottom: _minimumPadding),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                      child: Center(
-                        child: Text(
-                          "In To: ",
-                          style: TextStyle(
-                            inherit: true,
-                            fontSize: 30.0,
-                            shadows: [
-                              Shadow(
-                                // bottomLeft
-                                  offset: Offset(-1.5, -1.5),
-                                  color: Colors.white),
-                              Shadow(
-                                // bottomRight
-                                  offset: Offset(1.5, -1.5),
-                                  color: Colors.white),
-                              Shadow(
-                                // topRight
-                                  offset: Offset(1.5, 1.5),
-                                  color: Colors.white),
-                              Shadow(
-                                // topLeft
-                                  offset: Offset(-1.5, 1.5),
-                                  color: Colors.white),
-                            ],
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: EdgeInsets.all(_minimumPadding * 2),
+          child: ListView(
+            children: <Widget>[
+              getImageAsset(),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: _minimumPadding, bottom: _minimumPadding),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      style: textStyle,
+                      controller: currencyController,
+                      validator: (String value){
+                        if(value.isEmpty || value.contains(new RegExp(r'[A-Za-z]'))){
+                          return "Please enter numbers";
+                        }
+                      },
+                      decoration: InputDecoration(
+                          labelText: "Your currency",
+                          hintText: "Insert Number",
+                          labelStyle: textStyle,
+                          errorStyle: TextStyle(
+                            fontSize: 15.0
                           ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    )),
+                    Container(
+                      width: _minimumPadding * 5,
+                    ),
+                    Expanded(
+                        child: DropdownButton<String>(
+                      items: _currency.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      value: _currentItemSelected,
+                      onChanged: (String newValueSelected) {
+                        _onDropDownItemSelected(newValueSelected);
+                      },
+                    ))
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: _minimumPadding, bottom: _minimumPadding),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: Center(
+                      child: Text(
+                        "In To: ",
+                        style: TextStyle(
+                          inherit: true,
+                          fontSize: 30.0,
+                          shadows: [
+                            Shadow(
+                                // bottomLeft
+                                offset: Offset(-1.5, -1.5),
+                                color: Colors.white),
+                            Shadow(
+                                // bottomRight
+                                offset: Offset(1.5, -1.5),
+                                color: Colors.white),
+                            Shadow(
+                                // topRight
+                                offset: Offset(1.5, 1.5),
+                                color: Colors.white),
+                            Shadow(
+                                // topLeft
+                                offset: Offset(-1.5, 1.5),
+                                color: Colors.white),
+                          ],
                         ),
-                      )),
+                      ),
+                    )),
 //                  Expanded(
 //                      child: TextField(
 //                    keyboardType: TextInputType.number,
@@ -125,73 +133,76 @@ class _SIFormState extends State<SIForm> {
 //                        border: OutlineInputBorder(
 //                            borderRadius: BorderRadius.circular(5.0))),
 //                  )),
-                  Container(
-                    width: _minimumPadding * 5,
-                    height: _minimumPadding * 20,
-                  ),
-                  Expanded(
-                    child: DropdownButton<String>(
-                      items: _currency.map((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      value: _currentConvertValueSelected,
-                      onChanged: (String newValueSelected) {
-                        _onDropDownCurrencySelected(newValueSelected);
-                      },
+                    Container(
+                      width: _minimumPadding * 5,
+                      height: _minimumPadding * 20,
                     ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(
-                  bottom: _minimumPadding, top: _minimumPadding),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: RaisedButton(
-                      color: Colors.indigo,
-                      child: Text(
-                        "Convert",
-                        textScaleFactor: 1.5,
+                    Expanded(
+                      child: DropdownButton<String>(
+                        items: _currency.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        value: _currentConvertValueSelected,
+                        onChanged: (String newValueSelected) {
+                          _onDropDownCurrencySelected(newValueSelected);
+                        },
                       ),
-                      onPressed: () {
-                        setState(() {
-                          this.displayText = _calculateCurrency();
-                        });
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: RaisedButton(
-                      color: Colors.red,
-                      child: Text(
-                        "Reset",
-                        textScaleFactor: 1.5,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _reset();
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(_minimumPadding * 2),
-              child: Center(
-                child: Text(
-                  this.displayText,
-                  style: textStyle,
+                    )
+                  ],
                 ),
               ),
-            )
-          ],
+              Padding(
+                padding: EdgeInsets.only(
+                    bottom: _minimumPadding, top: _minimumPadding),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: RaisedButton(
+                        color: Colors.indigo,
+                        child: Text(
+                          "Convert",
+                          textScaleFactor: 1.5,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            if(_formKey.currentState.validate()){
+                            this.displayText = _calculateCurrency();
+                          }
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: RaisedButton(
+                        color: Colors.red,
+                        child: Text(
+                          "Reset",
+                          textScaleFactor: 1.5,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _reset();
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(_minimumPadding * 2),
+                child: Center(
+                  child: Text(
+                    this.displayText,
+                    style: textStyle,
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -259,10 +270,13 @@ class _SIFormState extends State<SIForm> {
       calculate = convert * usdToDkk;
       result = "$calculate DKK";
     }
+    else if (_currentItemSelected == "USD" && _currentConvertValueSelected == "USD" || _currentItemSelected == "DKK" && _currentConvertValueSelected == "DKK" || _currentItemSelected == "EURO" && _currentConvertValueSelected == "EURO"){
+      calculate = convert;
+      result = "Choose another currency";
+    }
 
     return result;
   }
-
 
   void _reset() {
     currencyController.text = "";
