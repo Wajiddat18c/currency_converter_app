@@ -18,6 +18,10 @@ class SIForm extends StatefulWidget {
 class _SIFormState extends State<SIForm> {
   var _currency = ['DKK', 'USD', 'EURO'];
   final _minimumPadding = 5.0;
+  var _currentItemSelected = "DKK";
+  var _currentConvertValueSelected = "USD";
+  TextEditingController currencyController = TextEditingController();
+  var displayText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +45,7 @@ class _SIFormState extends State<SIForm> {
                       child: TextField(
                     keyboardType: TextInputType.number,
                     style: textStyle,
+                    controller: currencyController,
                     decoration: InputDecoration(
                         labelText: "Your currency",
                         hintText: "Insert Number",
@@ -59,8 +64,10 @@ class _SIFormState extends State<SIForm> {
                         child: Text(value),
                       );
                     }).toList(),
-                    value: "DKK",
-                    onChanged: (String newValueSelected) {},
+                    value: _currentItemSelected,
+                    onChanged: (String newValueSelected) {
+                      _onDropDownItemSelected(newValueSelected);
+                    },
                   ))
                 ],
               ),
@@ -119,8 +126,10 @@ class _SIFormState extends State<SIForm> {
                           child: Text(value),
                         );
                       }).toList(),
-                      value: "USD",
-                      onChanged: (String newValueSelected) {},
+                      value: _currentConvertValueSelected,
+                      onChanged: (String newValueSelected) {
+                        _onDropDownCurrencySelected(newValueSelected);
+                      },
                     ),
                   )
                 ],
@@ -133,13 +142,25 @@ class _SIFormState extends State<SIForm> {
                 children: <Widget>[
                   Expanded(
                     child: RaisedButton(
-                      child: Text("Convert", style: textStyle,),
-                      onPressed: () {},
+                      color: Colors.indigo,
+                      child: Text(
+                        "Convert",
+                        textScaleFactor: 1.5,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          this.displayText = _calculateCurrency();
+                        });
+                      },
                     ),
                   ),
                   Expanded(
                     child: RaisedButton(
-                      child: Text("Reset", style: textStyle,),
+                      color: Colors.red,
+                      child: Text(
+                        "Reset",
+                        textScaleFactor: 1.5,
+                      ),
                       onPressed: () {},
                     ),
                   ),
@@ -148,7 +169,12 @@ class _SIFormState extends State<SIForm> {
             ),
             Padding(
               padding: EdgeInsets.all(_minimumPadding * 2),
-              child: Text('TODO', style: textStyle,),
+              child: Center(
+                child: Text(
+                  this.displayText,
+                  style: textStyle,
+                ),
+              ),
             )
           ],
         ),
@@ -168,5 +194,57 @@ class _SIFormState extends State<SIForm> {
       child: image,
       margin: EdgeInsets.all(_minimumPadding * 10),
     );
+  }
+
+  void _onDropDownItemSelected(String newValueSelected) {
+    setState(() {
+      this._currentItemSelected = newValueSelected;
+    });
+  }
+
+  void _onDropDownCurrencySelected(String newValueSelected) {
+    setState(() {
+      this._currentConvertValueSelected = newValueSelected;
+    });
+  }
+
+  String _calculateCurrency() {
+    double convert = double.parse(currencyController.text);
+    double calculate;
+    double euroToDkk = 7.466;
+    double euroToUsd = 1.125;
+    double dkkToEuro = 0.133;
+    double dkkToUsd = 0.150;
+    double usdToEuro = 0.888;
+    double usdToDkk = 6.634;
+
+    String result = "";
+    if (_currentItemSelected == "EURO" &&
+        _currentConvertValueSelected == "DKK") {
+      calculate = convert * euroToDkk;
+      result = "$calculate DKK";
+    } else if (_currentItemSelected == "EURO" &&
+        _currentConvertValueSelected == "USD") {
+      calculate = convert * euroToUsd;
+      result = "$calculate \$";
+    } else if (_currentItemSelected == "DKK" &&
+        _currentConvertValueSelected == "EURO") {
+      calculate = convert * dkkToEuro;
+      result = "$calculate €";
+    } else if (_currentItemSelected == "DKK" &&
+        _currentConvertValueSelected == "USD") {
+      calculate = convert * dkkToUsd;
+      result = "$calculate \$";
+    } else if (_currentItemSelected == "USD" &&
+        _currentConvertValueSelected == "EURO") {
+      calculate = convert * usdToEuro;
+      result = "$calculate €";
+    } else if (_currentItemSelected == "USD" &&
+        _currentConvertValueSelected == "DKK") {
+      calculate = convert * usdToDkk;
+      result = "$calculate DKK";
+    }
+
+    return result;
   }
 }
