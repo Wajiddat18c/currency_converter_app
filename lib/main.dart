@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     title: "Simple Currency Converter",
     home: SIForm(),
+    theme: ThemeData(
+        primaryColor: Colors.indigo, accentColor: Colors.indigoAccent),
   ));
 }
 
@@ -18,6 +21,7 @@ class _SIFormState extends State<SIForm> {
 
   @override
   Widget build(BuildContext context) {
+    TextStyle textStyle = Theme.of(context).textTheme.title;
     return Scaffold(
 //      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
@@ -36,9 +40,11 @@ class _SIFormState extends State<SIForm> {
                   Expanded(
                       child: TextField(
                     keyboardType: TextInputType.number,
+                    style: textStyle,
                     decoration: InputDecoration(
-                        labelText: "Value 1",
-                        hintText: "number",
+                        labelText: "Your currency",
+                        hintText: "Insert Number",
+                        labelStyle: textStyle,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0))),
                   )),
@@ -65,29 +71,58 @@ class _SIFormState extends State<SIForm> {
               child: Row(
                 children: <Widget>[
                   Expanded(
-                      child: TextField(
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                        labelText: "Value 2",
-                        hintText: "number",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0))),
+                      child: Center(
+                    child: Text(
+                      "In To: ",
+                      style: TextStyle(
+                        inherit: true,
+                        fontSize: 30.0,
+                        shadows: [
+                          Shadow(
+                              // bottomLeft
+                              offset: Offset(-1.5, -1.5),
+                              color: Colors.white),
+                          Shadow(
+                              // bottomRight
+                              offset: Offset(1.5, -1.5),
+                              color: Colors.white),
+                          Shadow(
+                              // topRight
+                              offset: Offset(1.5, 1.5),
+                              color: Colors.white),
+                          Shadow(
+                              // topLeft
+                              offset: Offset(-1.5, 1.5),
+                              color: Colors.white),
+                        ],
+                      ),
+                    ),
                   )),
+//                  Expanded(
+//                      child: TextField(
+//                    keyboardType: TextInputType.number,
+//                    decoration: InputDecoration(
+//                        labelText: "Value 2",
+//                        hintText: "number",
+//                        border: OutlineInputBorder(
+//                            borderRadius: BorderRadius.circular(5.0))),
+//                  )),
                   Container(
                     width: _minimumPadding * 5,
                     height: _minimumPadding * 20,
                   ),
                   Expanded(
-                      child: DropdownButton<String>(
-                    items: _currency.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
-                    value: "USD",
-                    onChanged: (String newValueSelected) {},
-                  ))
+                    child: DropdownButton<String>(
+                      items: _currency.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      value: "USD",
+                      onChanged: (String newValueSelected) {},
+                    ),
+                  )
                 ],
               ),
             ),
@@ -98,13 +133,13 @@ class _SIFormState extends State<SIForm> {
                 children: <Widget>[
                   Expanded(
                     child: RaisedButton(
-                      child: Text("Convert"),
+                      child: Text("Convert", style: textStyle,),
                       onPressed: () {},
                     ),
                   ),
                   Expanded(
                     child: RaisedButton(
-                      child: Text("Reset"),
+                      child: Text("Reset", style: textStyle,),
                       onPressed: () {},
                     ),
                   ),
@@ -113,7 +148,7 @@ class _SIFormState extends State<SIForm> {
             ),
             Padding(
               padding: EdgeInsets.all(_minimumPadding * 2),
-              child: Text('TODO'),
+              child: Text('TODO', style: textStyle,),
             )
           ],
         ),
